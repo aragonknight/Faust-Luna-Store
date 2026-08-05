@@ -1,0 +1,27 @@
+name: Cron Reminder Telegram
+
+on:
+  workflow_dispatch: {}     # biar bisa dites manual kapan aja dari tab Actions
+  schedule:
+    - cron: '0 1 * * *'     # tiap hari jam 01:00 UTC = 08:00 WIB
+
+jobs:
+  reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Jalankan cron reminder Telegram
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_HMIN: ${{ secrets.TELEGRAM_HMIN }}
+        run: node .github/scripts/telegram-reminder.mjs

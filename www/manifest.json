@@ -1,0 +1,44 @@
+{
+    "id": "/",
+    "short_name": "FaustLuna",
+    "name": "FaustLuna Store Starlight Manager",
+    "description": "Aplikasi pencatatan penjualan Starlight, WDP, dan Top Up game milik FaustLuna Store.",
+    "icons": [
+        {
+            "src": "./icons/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any"
+        },
+        {
+            "src": "./icons/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any"
+        },
+        {
+            "src": "./icons/icon-512-maskable.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
+        }
+    ],
+    "start_url": "/",
+    "scope": "/",
+    "background_color": "#0a0f1d",
+    "theme_color": "#d4af37",
+    "display": "standalone",
+    "orientation": "portrait",
+    "lang": "id",
+    "categories": ["business", "finance", "productivity"],
+    "dir": "ltr",
+    "prefer_related_applications": false,
+    "shortcuts": [
+        {
+            "name": "Buka Dashboard FaustLuna",
+            "short_name": "Dashboard",
+            "url": "/",
+            "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }]
+        }
+    ]
+}

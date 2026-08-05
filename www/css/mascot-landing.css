@@ -1,0 +1,199 @@
+/* ============================================================ */
+/* WIDGET MASKOT LUNA, EMPTY STATE, LANDING PAGE, KARTU PRODUK HOME */
+/* (bagian dari style.css asli - FaustLuna Store) */
+/* ============================================================ */
+/* --- MASKOT LUNA: WIDGET MENGAMBANG GLOBAL --- */
+.maskot-widget {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 9998;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    user-select: none;
+    pointer-events: none; /* biar area kosong di sekitar Luna (termasuk balon chat) gak ikut kena tap */
+}
+.maskot-widget-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--text-gold);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 10px var(--accent-alpha);
+    background: var(--bg-card);
+    transition: transform 0.25s ease;
+    animation: maskotBob 2.6s ease-in-out infinite;
+    pointer-events: auto; /* cuma bulatan avatar ini yang bisa di-tap */
+    cursor: pointer;
+}
+.maskot-widget:hover .maskot-widget-avatar { transform: scale(1.08); }
+@keyframes maskotBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+.maskot-widget-stack { display: flex; flex-direction: column; align-items: flex-end; }
+.maskot-bubble {
+    max-width: 190px;
+    background: var(--bg-card);
+    border: 1px solid var(--text-gold);
+    color: var(--text-white);
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 8px 10px;
+    border-radius: 10px 10px 2px 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    margin-bottom: 6px;
+    opacity: 0;
+    transform: translateY(6px) scale(0.95);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+}
+.maskot-bubble.show { opacity: 1; transform: translateY(0) scale(1); }
+
+/* --- MASKOT: EMPTY STATE / BANNER KECIL --- */
+.maskot-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 18px 10px;
+    grid-column: 1/-1;
+}
+.maskot-empty-state img {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--accent-alpha);
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+.maskot-empty-state span {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.maskot-inline-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--text-gold);
+    vertical-align: middle;
+    margin-right: 8px;
+}
+.urgent-alert .maskot-inline-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-color: var(--danger-red);
+}
+
+/* --- LANDING PAGE / COVER SCREEN --- */
+.landing-page {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: linear-gradient(160deg, var(--bg-main), var(--bg-card));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 14px;
+    box-sizing: border-box;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+    overflow-y: auto; /* jaga-jaga kalau di layar sangat pendek masih kurang muat, tetap bisa digeser */
+}
+.landing-page.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.landing-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: min(90vw, 900px);
+    width: 100%;
+    margin: auto; /* biar tetap center walau .landing-page jadi scrollable */
+}
+/* Catatan: ukuran-ukuran di bawah ini sengaja dibikin jauh lebih kecil dari versi
+   awal (yang didesain sebagai "cover screen" tanpa form) -- karena sekarang ada
+   form login di dalamnya, jadi total tingginya perlu ditekan biar tetap muat 1
+   layar HP tanpa perlu discroll. */
+.landing-logo {
+    width: clamp(64px, 11vw, 120px);
+    height: clamp(64px, 11vw, 120px);
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--text-gold);
+    margin-bottom: 10px;
+    box-shadow: 0 0 32px var(--accent-alpha);
+}
+.landing-title {
+    font-size: clamp(20px, 5.5vw, 40px);
+    letter-spacing: 2px;
+    color: var(--text-gold);
+    margin: 0 0 6px;
+    font-weight: bold;
+}
+.landing-tagline {
+    font-size: clamp(11px, 2.4vw, 15px);
+    color: var(--text-muted);
+    margin: 0 0 12px;
+    line-height: 1.4;
+    max-width: min(85vw, 680px);
+}
+.landing-maskot {
+    width: clamp(70px, 18vw, 130px);
+    height: clamp(70px, 18vw, 130px);
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--text-gold);
+    box-shadow: 0 10px 34px rgba(0,0,0,0.5);
+    margin-bottom: 12px;
+    animation: maskotBob 3s ease-in-out infinite;
+}
+.landing-btn {
+    width: auto;
+    padding: clamp(12px, 1.6vw, 18px) clamp(32px, 6vw, 56px);
+    border-radius: 30px;
+    font-size: clamp(15px, 2vw, 19px);
+}
+
+/* --- HOME: KARTU PILIHAN PRODUK --- */
+.product-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+}
+.product-card {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-alpha);
+    border-radius: 10px;
+    padding: 22px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.product-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--text-gold);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+.product-card-icon { font-size: 34px; margin-bottom: 10px; }
+.product-card-title { font-size: 15px; font-weight: bold; color: var(--text-white); letter-spacing: 0.5px; margin-bottom: 4px; }
+.product-card-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.4; min-height: 30px; }
+.product-card-cta {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--bg-main);
+    background: var(--text-gold);
+    padding: 6px 16px;
+    border-radius: 20px;
+}

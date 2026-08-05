@@ -1,0 +1,110 @@
+/* ============================================================ */
+/* VARIABEL TEMA GLOBAL & HEADER APLIKASI */
+/* (bagian dari style.css asli - FaustLuna Store) */
+/* ============================================================ */
+/* --- GLOBAL VARIABLE THEMES LOGIC --- */
+:root, [data-theme="faust-gold"] {
+    --bg-main: #060b14;
+    --bg-card: #091124;
+    --text-gold: #d4af37;
+    --text-white: #ffffff;
+    --text-muted: #8899a6;
+    --success-green: #2ecc71;
+    --danger-red: #e74c3c;
+    --booking-purple: #9b59b6;
+    --accent-alpha: rgba(214, 175, 55, 0.15);
+    --accent-alpha-low: rgba(214, 175, 55, 0.05);
+}
+[data-theme="luna-neon"] {
+    --bg-main: #090514;
+    --bg-card: #110924;
+    --text-gold: #00e5ff;
+    --text-white: #ffffff;
+    --text-muted: #9fa8da;
+    --success-green: #00ff88;
+    --danger-red: #ff1744;
+    --booking-purple: #d500f9;
+    --accent-alpha: rgba(0, 229, 255, 0.2);
+    --accent-alpha-low: rgba(0, 229, 255, 0.06);
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-white);
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.live-presentation-active .live-hide, 
+body.live-presentation-active #form-penjualan, 
+body.live-presentation-active #chat-parser,
+body.live-presentation-active .card-action-footer, 
+body.live-presentation-active .btn-mini-danger {
+    display: none !important;
+}
+
+/* --- APP HEADER --- */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--accent-alpha);
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+.header-title {
+    font-size: 15px;
+    color: var(--text-gold);
+    margin: 0;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 8px;
+}
+.hamburger-btn {
+    background: none;
+    border: none;
+    color: var(--text-gold);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+}
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.header-controls button {
+    background: var(--accent-alpha-low);
+    border: 1px solid var(--accent-alpha);
+    color: var(--text-gold);
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: border-color 0.2s, transform 0.15s, background 0.2s;
+}
+.header-controls button:hover {
+    border-color: currentColor;
+    background: var(--accent-alpha);
+    transform: translateY(-1px);
+}
+.header-controls button {
+    position: relative;
+}
+

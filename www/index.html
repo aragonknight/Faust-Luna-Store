@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="faust-gold">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjualan Starlight Faust Luna</title>
+    <link rel="stylesheet" href="css/base-theme.css">
+    <link rel="stylesheet" href="css/navbar-widgets.css">
+    <link rel="stylesheet" href="css/layout-components.css">
+    <link rel="stylesheet" href="css/mascot-landing.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+    <link rel="apple-touch-icon" href="./icons/icon-512.png">
+    <meta name="theme-color" content="#060b14">
+</head>
+<body>
+    <div id="landing-page" class="landing-page">
+        <div class="landing-content">
+            <img src="logo.png" class="landing-logo" alt="FaustLuna Store">
+            <h1 class="landing-title">FAUSTLUNA STORE</h1>
+            <p class="landing-tagline">Top-Up Starlight &amp; Diamond Mobile Legends Terpercaya, Aman, dan Cepat.</p>
+            <img src="assets/maskot/luna-baca-buku.jpg" class="landing-maskot" alt="Luna">
+
+            <div id="landing-loading" class="hidden" style="margin: 16px 0; font-size: 13px; color: var(--text-muted);">
+                ⏳ Memuat data akun kamu...
+            </div>
+
+            <form id="form-landing-login" style="width: 100%; max-width: 320px; margin-top: 2px;">
+                <div class="form-group" style="text-align:left;">
+                    <label>Email</label>
+                    <input type="email" id="login-email" placeholder="emailkamu@gmail.com" required autocomplete="username">
+                </div>
+                <div class="form-group" style="text-align:left;">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="Password" required autocomplete="current-password">
+                </div>
+                <div id="login-error" class="hidden" style="color:#ff6b6b; font-size:12px; margin-bottom:8px;"></div>
+                <button type="submit" id="btn-enter-app" class="btn-premium-action landing-btn" style="width:100%;">🚀 Masuk ke Toko</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SOUNDPACK RETRO ARCADE (8-BIT) -->
+    <audio id="snd-success" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
+    <audio id="snd-alert" src="https://assets.mixkit.co/active_storage/sfx/911/911-84.wav" preload="auto"></audio>
+    <audio id="snd-click" src="https://assets.mixkit.co/active_storage/sfx/2572/2572-84.wav" preload="auto"></audio>
+
+    <!-- ========== VIEW: HOME (HUB PRODUK) ========== -->
+    <div id="view-home" class="app-view">
+        <header class="app-header">
+            <button id="home-menu-toggle" class="hamburger-btn">☰</button>
+            <h1 class="header-title">FAUSTLUNA STORE</h1>
+            <div class="header-controls">
+                <span id="header-clock" class="header-clock">--:--</span>
+                <button id="btn-search-toggle" class="btn-icon-nav" title="Cari Transaksi">🔍</button>
+                <button id="btn-notif-toggle" class="btn-icon-nav" title="Notifikasi">🔔<span id="notif-badge" class="notif-badge hidden">0</span></button>
+                <button id="btn-luna-avatar" class="btn-luna-avatar" title="Halo dari Luna!">
+                    <img src="assets/maskot/luna-hai.jpg" alt="Luna">
+                </button>
+                <button id="btn-fullscreen-home" class="btn-icon-nav btn-fullscreen-toggle" title="Fullscreen">⛶</button>
+            </div>
+
+            <div id="search-overlay" class="search-overlay hidden">
+                <div class="search-box">
+                    <span class="search-box-icon">🔍</span>
+                    <input type="text" id="search-input" placeholder="Cari nama pembeli, ID, atau item...">
+                    <button id="btn-search-close" class="search-box-close">✕</button>
+                </div>
+                <div id="search-results" class="search-results"></div>
+            </div>
+
+            <div id="notif-dropdown" class="notif-dropdown hidden">
+                <div class="notif-dropdown-title">🔔 Notifikasi</div>
+                <div id="notif-list" class="notif-list"></div>
+            </div>
+
+            <div id="luna-popup" class="luna-popup hidden">
+                <img id="luna-popup-img" src="assets/maskot/luna-hai.jpg" alt="Luna">
+                <p id="luna-popup-text"></p>
+            </div>
+        </header>
+
+        <nav id="home-sidebar" class="sidebar">
+            <div class="sidebar-brand">faustluna store</div>
+            <ul class="sidebar-menu">
+                <li class="menu-item active" data-target="home-dashboard">📊 Dashboard</li>
+                <li class="menu-item" data-target="home-keuangan">💰 Catatan Keuangan</li>
+                <li class="menu-item" data-target="home-ledger">🧾 Mutasi E-Wallet</li>
+                <li class="menu-item" data-target="home-logs">📜 Log Aktivitas</li>
+                <li class="menu-item" data-target="home-pengaturan">⚙️ Pengaturan</li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="sidebar-profile">
+                    <div class="avatar-glow">👑</div>
+                    <div class="profile-det">
+                        <p class="owner-name">FaustLuna Owner</p>
+                        <p class="sys-status"><span class="pulse-dot"></span> System Active</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="home-sidebar-overlay" class="sidebar-overlay"></div>
+
+        <main class="app-container">
+            <section id="page-home-dashboard" class="spa-page active">
+                <div class="premium-card" style="display:flex; align-items:center; gap:14px; margin-bottom:15px;">
+                    <img src="assets/maskot/luna-hai.jpg" alt="Luna" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--text-gold); flex-shrink:0;">
+                    <div>
+                        <div class="card-header-title" style="margin-bottom:2px;">Selamat Datang, Owner! 👋</div>
+                        <div style="font-size:11px; color:var(--text-muted);">Pilih layanan yang mau kamu kelola di bawah ini.</div>
+                    </div>
+                </div>
+                <div class="product-card-grid">
+                    <div class="product-card" data-product="mobileleg">
+                        <div class="product-card-icon">✨</div>
+                        <div class="product-card-title">Mobile Legends</div>
+                        <div class="product-card-sub">Starlight, WDP & Twilight Pass</div>
+                        <div class="product-card-cta">Masuk →</div>
+                    </div>
+                    <!-- Tambah game top up baru: copy 1 blok div.product-card ini, ganti data-product,
+                         icon, title, sub-nya. data-product HARUS sama persis dengan key di PRODUCT_CONFIG (script.js) -->
+                    <div class="product-card" data-product="genshin">
+                        <div class="product-card-icon">⚔️</div>
+                        <div class="product-card-title">Genshin Impact</div>
+                        <div class="product-card-sub">Top-Up Genesis Crystal</div>
+                        <div class="product-card-cta">Masuk →</div>
+                    </div>
+                    <div class="product-card" data-product="wuthering">
+                        <div class="product-card-icon">🌊</div>
+                        <div class="product-card-title">Wuthering Waves</div>
+                        <div class="product-card-sub">Top-Up Astrite</div>
+                        <div class="product-card-cta">Masuk →</div>
+                    </div>
+                </div>
+
+
+                <div class="premium-card" style="margin-top: 15px;">
+                    <div class="card-header-title">📊 Ringkasan Omset Gabungan (Semua Produk)</div>
+                    <div class="invoice-divider"></div>
+                    <div id="home-combined-summary"></div>
+                    <div class="invoice-divider" style="margin-top:10px;"></div>
+                    <div class="stats-premium-row" style="margin-top: 10px;">
+                        <div class="stat-mini-box">
+                            <span class="lbl">Total Omset</span>
+                            <span id="combined-total-omset" class="val text-white">Rp 0</span>
+                        </div>
+                        <div class="stat-mini-box main-profit">
+                            <span class="lbl" style="color:#060b14;">Total Profit</span>
+                            <span id="combined-total-profit" class="val privacy-hide">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="page-home-keuangan" class="spa-page">
+                <div class="section-header-box">
+                    <h2>💰 Catatan Keuangan Gabungan</h2>
+                </div>
+                <div class="stats-premium-row" style="margin-bottom: 15px;">
+                    <div class="stat-mini-box">
+                        <span class="lbl">Pemasukan <button type="button" class="btn-mini-edit" onclick="editFinanceAdjustment('pemasukan')" title="Ubah manual">✏️</button></span>
+                        <span id="keuangan-pemasukan" class="val text-white">Rp 0</span>
+                    </div>
+                    <div class="stat-mini-box">
+                        <span class="lbl">Pengeluaran</span>
+                        <span id="keuangan-pengeluaran" class="val" style="color: var(--danger-red);">Rp 0</span>
+                    </div>
+                    <div class="stat-mini-box main-profit">
+                        <span class="lbl" style="color: #060b14;">Saldo <button type="button" class="btn-mini-edit" onclick="editFinanceAdjustment('saldo')" title="Ubah manual">✏️</button></span>
+                        <span id="keuangan-saldo" class="val">Rp 0</span>
+                    </div>
+                </div>
+
+                <div class="premium-card">
+                    <div class="card-header-title">➕ Input Pengeluaran Manual</div>
+                    <form id="form-home-pengeluaran" style="margin-top: 10px;">
+                        <div class="form-group">
+                            <label>Deskripsi Pengeluaran</label>
+                            <input type="text" id="home-peng-desc" placeholder="Contoh: Beli kuota, Bayar listrik" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nominal (Rp)</label>
+                            <input type="number" id="home-peng-amount" placeholder="0" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal</label>
+                            <input type="date" id="home-peng-date" required>
+                        </div>
+                        <button type="submit" class="btn-premium-action">SIMPAN PENGELUARAN</button>
+                    </form>
+                </div>
+
+                <div class="premium-card" style="margin-top: 15px;">
+                    <div class="card-header-title">📋 Riwayat Pengeluaran (Manual)</div>
+                    <div class="invoice-divider"></div>
+                    <div id="home-pengeluaran-list" class="schedule-list"></div>
+                </div>
+            </section>
+
+            <section id="page-home-ledger" class="spa-page">
+                <div class="section-header-box">
+                    <h2>🧾 Log Mutasi Rekening & E-Wallet Manual</h2>
+                    <button id="btn-add-ledger" class="btn-add-new">+ Tambah Mutasi</button>
+                </div>
+                <div class="premium-card">
+                    <form id="form-ledger" style="display:none; margin-bottom: 20px; border-bottom: 1px dashed var(--accent-alpha); padding-bottom: 15px;">
+                        <div class="form-row">
+                            <div class="form-group"><label>Platform</label><select id="led-platform"><option>DANA</option><option>GOPAY</option><option>OVO</option><option>QRIS</option><option>BANK TRANSFER</option></select></div>
+                            <div class="form-group"><label>Nominal (Rp)</label><input type="number" id="led-amount" required></div>
+                        </div>
+                        <div class="form-group"><label>Keterangan / Pengirim</label><input type="text" id="led-desc" placeholder="Contoh: Dari Sss starlight basic" required></div>
+                        <button type="submit" class="btn-premium-action" style="margin-top:5px; padding:8px;">Simpan Mutasi</button>
+                    </form>
+                    <div id="ledger-list-container"></div>
+                </div>
+            </section>
+
+            <section id="page-home-logs" class="spa-page">
+                <div class="section-header-box">
+                    <h2>📜 Log Riwayat Aktivitas Sistem</h2>
+                    <button id="btn-clear-logs" class="btn-danger-clean">Bersihkan Log</button>
+                </div>
+                <div class="premium-card" style="max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 11px; line-height: 1.6;" id="log-console-area"></div>
+            </section>
+
+            <section id="page-home-pengaturan" class="spa-page">
+                <div class="section-header-box">
+                    <h2>⚙️ Pengaturan</h2>
+                </div>
+
+                <div class="premium-card">
+                    <div class="card-header-title">👤 Akun</div>
+                    <div class="invoice-divider"></div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Login sebagai: <strong id="active-account-email" style="color:var(--text-gold);">-</strong></p>
+                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Data kamu otomatis tersimpan online setiap ada perubahan — gak perlu backup manual lagi. Data ini cuma bisa diakses lewat akun ini, terpisah total dari akun lain.</p>
+                    <button id="btn-logout" class="btn-premium-action" style="background:transparent; border:1px solid #ff6b6b; color:#ff6b6b;">🚪 Keluar (Logout)</button>
+                </div>
+
+                <div class="premium-card" style="margin-top:15px;">
+                    <div class="card-header-title">📱 Notifikasi & Pengingat di HP</div>
+                    <div class="invoice-divider"></div>
+                    <p style="font-size:11px; color:var(--text-muted); margin: 6px 0 10px;">Notifikasi muncul di status bar HP (tetap jalan walau aplikasi ditutup) untuk pesanan baru masuk, pengiriman sukses, dan pengingat H- sebelum jatuh tempo kirim.</p>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12px; margin-bottom:10px;">
+                        <input type="checkbox" id="set-h1-notif-enabled"> Aktifkan pengingat jatuh tempo di HP
+                    </label>
+                    <div class="form-group">
+                        <label>H- Pengingat Jatuh Tempo</label>
+                        <select id="set-wa-hmin">
+                            <option value="1">H-1 (1 hari sebelum)</option>
+                            <option value="2" selected>H-2 (2 hari sebelum)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="premium-card" style="margin-top:15px;">
+                    <div class="card-header-title">☁️ Sinkronisasi Manual (Cadangan)</div>
+                    <div class="invoice-divider"></div>
+                    <p style="font-size:11px; color:var(--text-muted); margin: 6px 0 10px;">Data kamu udah otomatis tersinkron ke akun yang login. Tombol di bawah ini cuma cadangan buat maksa sinkron manual kalau perlu (misal abis offline lama).</p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;">
+                        <button id="btn-supabase-push" class="btn-premium-action" style="background:transparent; border:1px solid var(--text-gold); color:var(--text-gold); font-size:11px;">☁️ BACKUP KE SUPABASE</button>
+                        <button id="btn-supabase-pull" class="btn-premium-action" style="background:transparent; border:1px solid var(--text-gold); color:var(--text-gold); font-size:11px;">⬇️ TARIK DATA DARI SUPABASE</button>
+                    </div>
+                    <p id="supabase-sync-status" style="font-size:10px; color:var(--text-muted); margin-top:8px;">Belum pernah sinkron.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ========== VIEW: WORKSPACE PRODUK (STARLIGHT / WDP / TOPUP) ========== -->
+    <div id="view-product" class="app-view hidden">
+    <header class="app-header">
+        <button id="menu-toggle" class="hamburger-btn">☰</button>
+        <h1 class="header-title" id="product-header-title">FAUSTLUNA STORE</h1>
+        <div class="header-controls">
+            <button id="btn-fullscreen" class="btn-icon-nav btn-fullscreen-toggle" title="Fullscreen">⛶</button>
+            <button id="btn-install-pwa" class="btn-icon-nav hidden" style="border-color: #2ecc71; color: #2ecc71;" title="Install App">📥</button>
+            <button id="btn-live-mode" class="btn-icon-nav" style="border-color: #ff00ff; color: #ff00ff;" title="Live Mode">📺</button>
+            <button id="theme-switch" class="btn-icon-nav" title="Ganti Tema">🌓</button>
+            <button id="privacy-toggle" class="btn-icon-nav btn-privacy" title="Mode Kasir">👁</button>
+        </div>
+    </header>
+
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-brand" id="product-sidebar-brand">faustluna store</div>
+        <button id="btn-back-home" class="btn-back-home-sidebar" title="Kembali ke Home">🏠 Kembali ke Home</button>
+        <ul class="sidebar-menu">
+            <li class="menu-item active" data-target="dashboard">📊 Dashboard</li>
+            <li class="menu-item" id="menu-item-input-penjualan" data-target="input-penjualan">📝 Input Penjualan</li>
+            <li class="menu-item" id="menu-item-stok" data-target="stok">📦 Info Stok Akun</li>
+            <li class="menu-item" id="menu-item-klaim-wdp" data-target="klaim-wdp">🎁 Klaim WDP</li>
+            <li class="menu-item" data-target="pembeli">👥 Info Pembeli</li>
+            <li class="menu-item" data-target="rekap">📈 Rekap Jualan</li>
+            <li class="menu-item" id="menu-item-pengeluaran" data-target="pengeluaran">💸 Pengeluaran & Laporan</li>
+            <li class="menu-item" id="menu-item-recycle-bin" data-target="recycle-bin">🗑 Kotak Sampah</li>
+        </ul>
+        
+        <div class="sidebar-footer" id="sidebar-pass-container">
+            <div class="sidebar-profile">
+                <div class="avatar-glow">👑</div>
+                <div class="profile-det">
+                    <p class="owner-name">FaustLuna Owner</p>
+                    <p class="sys-status"><span class="pulse-dot"></span> System Active</p>
+                </div>
+            </div>
+            <div class="footer-meta">
+                <small id="app-version-label">🔒 Secure</small>
+                <small id="sidebar-dm-pool">💎 0 Pool</small>
+            </div>
+        </div>
+    </nav>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <main class="app-container">
+        <div id="urgent-alert-container" class="urgent-alert hidden">
+            <img src="assets/maskot/luna-pengingat.jpg" alt="Luna Pengingat" class="maskot-inline-icon">
+            <div class="alert-text" id="alert-zone-text">
+                <strong>Alarm Pengiriman Mendesak!</strong> Ada pesanan menunggak! Silakan cek menu Info Pembeli.
+            </div>
+        </div>
+
+        <section id="page-dashboard" class="spa-page active">
+            <div class="premium-card" style="display:flex; align-items:center; gap:14px; margin-bottom:12px;">
+                <img src="assets/maskot/luna-tongkat.jpg" alt="Luna" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--text-gold); flex-shrink:0;">
+                <div>
+                    <div class="card-header-title" style="margin-bottom:2px;" id="dashboard-hero-title">Halo, Owner FaustLuna! 👋</div>
+                    <div style="font-size:11px; color:var(--text-muted);" id="dashboard-hero-text">Luna siap bantu pantau jualan kamu hari ini.</div>
+                </div>
+            </div>
+            <!-- RINGKASAN AMUNISI GABUNGAN (KHUSUS MOBILE LEGENDS) -->
+            <div id="ml-only-stock-summary" class="stats-premium-row" style="margin-bottom: 10px;">
+                <div class="stat-mini-box">
+                    <span class="lbl">Total Stok Basic</span>
+                    <span id="global-stock-basic" class="val text-white">0 Pcs</span>
+                </div>
+                <div class="stat-mini-box">
+                    <span class="lbl">Total Stok Premium</span>
+                    <span id="global-stock-premium" class="val text-white">0 Pcs</span>
+                </div>
+                <div class="stat-mini-box">
+                    <span class="lbl">Total Diamond Pool</span>
+                    <span id="global-dm-pool" class="val text-white">💎 0</span>
+                </div>
+            </div>
+
+            <!-- MONITOR KINERJA HARI INI -->
+            <div class="stats-premium-row" style="margin-bottom: 15px;">
+                <div class="stat-mini-box">
+                    <span class="lbl">⚡ Order Masuk Hari Ini</span>
+                    <span id="today-orders-count" class="val text-white">0</span>
+                </div>
+                <div class="stat-mini-box">
+                    <span class="lbl">✅ Terkirim Hari Ini</span>
+                    <span id="today-success-count" class="val text-white">0</span>
+                </div>
+                <div class="stat-mini-box main-profit">
+                    <span class="lbl" style="color: #060b14;">Profit Hari Ini</span>
+                    <span id="today-profit-count" class="val privacy-hide" style="color: var(--success-green);">Rp 0</span>
+                </div>
+            </div>
+
+            <!-- SMART ACCOUNT ALERT (KHUSUS MOBILE LEGENDS) -->
+            <div id="smart-account-alert" class="agenda-item" style="background: rgba(46, 204, 113, 0.08); border: 1px dashed var(--success-green); margin-bottom: 15px; justify-content: center; font-weight: bold; color: var(--success-green); font-size: 11px;">
+                🔄 Menganalisis rekomendasi akun penjual...
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="premium-card">
+                    <div class="card-header-title">📅 JADWAL PENGIRIMAN HARI INI</div>
+                    <div class="invoice-divider"></div>
+                    <div id="daily-schedule-list" class="schedule-list"></div>
+                </div>
+
+                <div class="premium-card">
+                    <div class="card-header-title">📢 PING ACTION CENTER (PELANGGAN HARI INI)</div>
+                    <div class="invoice-divider"></div>
+                    <div id="ping-action-list" class="schedule-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-input-penjualan" class="spa-page">
+            <div class="section-header-box">
+                <h2>📝 Input Transaksi Penjualan Baru</h2>
+            </div>
+            <div class="premium-card">
+                <div class="form-group">
+                    <label>⚡ Smart Chat Parser (Salin-Tempel Teks WA)</label>
+                    <textarea id="chat-parser" placeholder="Tempel format chat orderan WA di sini untuk auto-fill form instan..." rows="2" style="resize: none; font-size: 11px; font-family: monospace;"></textarea>
+                </div>
+
+                <form id="form-penjualan">
+                    <div class="form-group">
+                        <label>Nama Pembeli / Kontak Sosial Media</label>
+                        <input type="text" id="buyer-name" placeholder="Contoh: No WA / IGN / Nama FB Pembeli" list="crm-buyer-list" required>
+                        <datalist id="crm-buyer-list"></datalist>
+                        <span id="duplicate-warning" class="warning-text hidden">⚠️ Nama ini sudah ada dalam antrean!</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label>Target ID Game</label>
+                                <input type="text" id="buyer-id" placeholder="Contoh: 12345678">
+                                <span id="id-duplicate-warning" class="warning-text hidden">⚠️ ID ini sedang dalam antrean aktif!</span>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label id="buyer-zone-label">Zone ID (Server)</label>
+                                <input type="text" id="buyer-zone" placeholder="Auto" readonly style="opacity:0.7; background:rgba(255,255,255,0.05);">
+                                <select id="buyer-server-select" class="hidden"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="seller-account-group">
+                        <label>Akun Penjual (Rotasi Otomatis)</label>
+                        <select id="seller-account" required></select>
+                        <small id="rotation-hint" class="hint-text"></small>
+                    </div>
+                    
+                    <!-- Tab toggle Biasa/Gacha — cuma muncul kalau produk aktif punya varian Gacha (Mobile Legends) -->
+                    <div class="form-group" id="jenis-tab-switch-group" style="display:none;">
+                        <div style="display:flex; gap:6px; margin-bottom:8px;">
+                            <button type="button" id="jenis-tab-biasa" class="stok-tab-btn active" onclick="switchJenisTab('biasa')" style="flex:1; padding:6px; border-radius:8px; border:none; font-size:11px; font-weight:bold; cursor:pointer; background:var(--text-gold); color:#000;">📦 Biasa</button>
+                            <button type="button" id="jenis-tab-gacha" class="stok-tab-btn" onclick="switchJenisTab('gacha')" style="flex:1; padding:6px; border-radius:8px; border:none; font-size:11px; font-weight:bold; cursor:pointer; background:rgba(255,255,255,0.08); color:var(--text-muted);">🎰 Gacha</button>
+                        </div>
+                    </div>
+                    <!-- DUA KOLOM BERDAMPINGAN: VARIASI PRODUK & JUMLAH QUANTITY (UNTUK SEMUA ITEM) -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Variasi Produk</label>
+                            <select id="starlight-type" required></select>
+                        </div>
+                        <div class="form-group" style="max-width: 110px;">
+                            <label id="product-qty-label">Jumlah (Qty)</label>
+                            <input type="number" id="product-qty" value="1" min="1" required>
+                        </div>
+                    </div>
+
+                    <p id="capital-auto-info" class="hint-text hidden" style="margin: 4px 0 10px; font-size:11px;"></p>
+                    <div class="form-group" id="capital-field-group">
+                        <label>Harga Modal (Rp)</label>
+                        <input type="number" id="price-capital" placeholder="0" required>
+                        <small class="hint-text">Default keisi otomatis dari harga modal per jenis item (bisa diedit kalau harganya lagi berubah).</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Harga Jual Keseluruhan (Rp)</label>
+                        <input type="number" id="price-selling" placeholder="0" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Total Potongan Diskon (Rp)</label>
+                            <input type="number" id="price-discount" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Pembelian</label>
+                            <input type="date" id="purchase-date" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status Transaksi</label>
+                        <select id="transaction-status" required>
+                            <option value="Belum Dikirim">Belum Dikirim</option>
+                            <option value="Booking">Booking / Keep Slot</option>
+                            <option value="Sudah Dikirim">Sudah Dikirim</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-premium-action">💾 SIMPAN TRANSAKSI</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="page-pengeluaran" class="spa-page">
+            <div class="section-header-box">
+                <h2>💸 Pengeluaran & Laporan Keuangan</h2>
+            </div>
+            
+            <div class="stats-premium-row" style="margin-bottom: 15px;">
+                <div class="stat-mini-box">
+                    <span class="lbl">Total Pemasukan (Omset)</span>
+                    <span id="laporan-pemasukan" class="val text-white">Rp 0</span>
+                </div>
+                <div class="stat-mini-box">
+                    <span class="lbl">Total Pengeluaran (Biaya)</span>
+                    <span id="laporan-pengeluaran" class="val" style="color: var(--danger-red);">Rp 0</span>
+                </div>
+                <div class="stat-mini-box main-profit">
+                    <span class="lbl" style="color: #060b14;">Keuntungan Bersih (Net Profit)</span>
+                    <span id="laporan-keuntungan" class="val privacy-hide">Rp 0</span>
+                </div>
+            </div>
+
+            <div class="premium-card">
+                <div class="card-header-title">➕ Input Pengeluaran Baru</div>
+                <form id="form-pengeluaran" style="margin-top: 10px;">
+                    <div class="form-group">
+                        <label>Deskripsi / Nama Pengeluaran</label>
+                        <input type="text" id="pengeluaran-desc" placeholder="Contoh: Beli kuota, Bayar listrik, Fee Admin" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nominal Pengeluaran (Rp)</label>
+                        <input type="number" id="pengeluaran-amount" placeholder="0" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Pengeluaran</label>
+                        <input type="date" id="pengeluaran-date" required>
+                    </div>
+                    <button type="submit" class="btn-premium-action" style="margin-top: 10px;">SIMPAN PENGELUARAN</button>
+                </form>
+            </div>
+
+            <div class="premium-card" style="margin-top: 15px;">
+                <div class="card-header-title">📋 Riwayat Pengeluaran</div>
+                <div class="invoice-divider"></div>
+                <div id="pengeluaran-list" class="schedule-list"></div>
+            </div>
+        </section>
+
+        <section id="page-stok" class="spa-page">
+            <div class="section-header-box">
+                <h2>🗃️ Manajemen Stok Akun Penjual</h2>
+                <button id="btn-add-account" class="btn-add-new">+ Tambah Akun Baru</button>
+            </div>
+            <div class="form-group" style="max-width:220px; margin-bottom:10px;">
+                <label style="font-size:10px;">Urutkan</label>
+                <select id="stok-sort-select" class="select-clean">
+                    <option value="default">Default</option>
+                    <option value="stok-terendah">Stok Tersisa Terendah</option>
+                    <option value="gift-terendah">Sisa Slot Gift Terendah</option>
+                </select>
+            </div>
+            <div id="account-premium-grid" class="premium-grid-layout"></div>
+        </section>
+
+        <section id="page-klaim-wdp" class="spa-page">
+            <div class="section-header-box">
+                <h2>🎁 Klaim WDP Harian</h2>
+            </div>
+            <div class="premium-card" style="margin-bottom: 15px; padding: 12px 15px; font-size: 11px; color: var(--text-muted);">
+                1 WDP = 7 hari klaim (beli 2 WDP sekaligus = 14 hari, 3 WDP = 21 hari, dst). Jatah harian baru bisa diklaim (di game) mulai jam <b>16:00</b>. Ketuk titik hari yang sudah kebuka (⏰) buat nandain sudah diklaim (✅) — DM & modal akun ini bakal ikut nambah bertahap sesuai jatah hari itu.
+            </div>
+            <div id="klaim-wdp-list"></div>
+        </section>
+
+        <section id="page-pembeli" class="spa-page">
+            <div class="section-header-box">
+                <h2>👥 Antrean Antarmuka Pembeli</h2>
+            </div>
+            <div class="premium-card" style="margin-bottom: 15px; padding: 15px;">
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <input type="text" id="search-buyer" placeholder="🔍 Cari nama pembeli...">
+                </div>
+                <div class="filter-pembeli-row">
+                    <label><input type="checkbox" id="hide-delivered-check"> Sembunyikan Sudah Dikirim</label>
+                    <label><input type="checkbox" id="hide-acc-check"> Sembunyikan Sudah ACC Pertemanan</label>
+                </div>
+                <div class="form-group" style="margin-top:8px; margin-bottom:0;">
+                    <label style="font-size:10px;">Urutkan</label>
+                    <select id="pembeli-sort-select" class="select-clean">
+                        <option value="default">Default (Terbaru Dulu)</option>
+                        <option value="due-asc">Jatuh Tempo Terdekat</option>
+                        <option value="due-desc">Jatuh Tempo Terjauh</option>
+                        <option value="name-az">Nama A-Z</option>
+                    </select>
+                </div>
+            </div>
+            <div id="pembeli-premium-grid" class="premium-grid-layout"></div>
+        </section>
+
+        <section id="page-rekap" class="spa-page">
+            <div class="section-header-box">
+                <h2>📈 Rekapitulasi Finansial</h2>
+                <select id="rekap-month-filter" class="select-clean"></select>
+            </div>
+            <div class="stats-premium-row">
+                <div class="stat-mini-box">
+                    <span class="lbl">Omset</span>
+                    <span id="stat-omset" class="val text-white">Rp 0</span>
+                </div>
+                <div class="stat-mini-box">
+                    <span class="lbl">Modal</span>
+                    <span id="stat-modal" class="val text-white">Rp 0</span>
+                </div>
+                <div class="stat-mini-box main-profit">
+                    <span class="lbl" style="color: #060b14;">Profit</span>
+                    <span id="stat-profit" class="val privacy-hide" style="color: var(--success-green);">Rp 0</span>
+                </div>
+            </div>
+            <div id="rekap-premium-grid" class="premium-grid-layout"></div>
+            
+            <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr; gap: 10px;">
+                <button id="export-csv-btn" class="btn-premium-action" style="background: transparent; border: 1px solid var(--text-gold); color: var(--text-gold); font-size: 11px;">📊 EKSPOR KE EXCEL/CSV</button>
+            </div>
+        </section>
+
+        <section id="page-recycle-bin" class="spa-page">
+            <div class="section-header-box">
+                <h2><img src="assets/maskot/luna-recycle-bin.jpg" alt="Luna" class="maskot-inline-icon">🗑 Kotak Sampah</h2>
+                <button id="clear-trash-btn" class="btn-danger-clean">Kosongkan</button>
+            </div>
+            <div id="trash-premium-grid" class="premium-grid-layout"></div>
+        </section>
+    </main>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content invoice-card-box confirmation-box">
+            <div class="invoice-header-title" id="confirm-title" style="font-size: 15px;">SISTEM FAUSTLUNA</div>
+            <div class="invoice-divider"></div>
+            <p id="confirm-message" class="confirm-txt">Apakah Anda yakin ingin melakukan tindakan ini?</p>
+            <div class="confirm-actions">
+                <button id="btn-confirm-cancel" class="btn-mini-sec">BATAL</button>
+                <button id="btn-confirm-ok" class="btn-premium-action" style="width:auto; margin-top:0; padding: 8px 20px;">OKE</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="prompt-modal" class="modal">
+        <div class="modal-content invoice-card-box confirmation-box">
+            <div class="invoice-header-title" id="prompt-title" style="font-size: 15px;">SISTEM FAUSTLUNA</div>
+            <div class="invoice-divider"></div>
+            <p id="prompt-message" class="confirm-txt">Masukkan nilai:</p>
+            <div class="form-group" style="text-align:left;">
+                <input type="text" id="prompt-input">
+            </div>
+            <div class="confirm-actions">
+                <button id="btn-prompt-cancel" class="btn-mini-sec">BATAL</button>
+                <button id="btn-prompt-ok" class="btn-premium-action" style="width:auto; margin-top:0; padding: 8px 20px;">OKE</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="invoice-modal" class="modal">
+        <div class="modal-content invoice-card-box" id="invoice-modal-box">
+            <span class="close-modal" id="close-invoice">&times;</span>
+            <div class="invoice-header-title">FAUSTLUNA STORE</div>
+            <div class="invoice-header-sub">Official Game Gifting Invoice Receipt</div>
+             
+            <div style="display:flex; justify-content:center; gap:8px; margin: 10px 0; font-size:10px;" class="live-hide">
+                <label>🎨 Tema Nota: </label>
+                <select id="invoice-theme-picker" class="select-clean" style="padding:2px; font-size:10px;">
+                    <option value="#d4af37">Gold Classic</option>
+                    <option value="#00e5ff">Neon Cyan</option>
+                    <option value="#ff1744">Neon Red</option>
+                    <option value="#00ff88">Neon Green</option>
+                    <option value="#ffffff">Pure White</option>
+                </select>
+            </div>
+            <div class="invoice-divider"></div>
+            <div class="invoice-row"><span class="label">Nama Pembeli:</span><span class="value" id="inv-buyer-name">-</span></div>
+            <div class="invoice-row"><span class="label">Target Akun:</span><span class="value" id="inv-buyer-id">-</span></div>
+            <div class="invoice-row"><span class="label">Produk Item:</span><span class="value badge-sl" id="inv-item-type">-</span></div>
+            <div class="invoice-row"><span class="label">Tanggal Beli:</span><span class="value" id="inv-purchase-date">-</span></div>
+            <div class="invoice-row"><span class="label">Estimasi Kirim:</span><span class="value date-highlight" id="inv-delivery-date">-</span></div>
+            <div class="invoice-divider"></div>
+            <div class="invoice-row" style="margin-top: 5px; margin-bottom: 5px;"><span class="label" style="font-size: 16px;">Total Bersih:</span><span class="value price-highlight" id="inv-total-price">Rp 0</span></div>
+            <div class="invoice-footer-text">Nota Resmi Faustluna Store <br> Terima kasih atas kepercayaan Anda! 😊</div>
+            <button class="btn-tutup-nota live-hide" id="btn-close-invoice-card">TUTUP NOTA</button>
+            <button id="download-invoice-btn" class="btn-download-nota live-hide">🖼️ Unduh Gambar Nota</button>
+            <canvas id="invoice-canvas" width="450" height="530" style="display: none;"></canvas>
+        </div>
+    </div>
+
+    <div id="account-modal" class="modal">
+        <div class="modal-content invoice-card-box" style="border-style: solid;">
+            <span class="close-modal" id="close-account-modal">&times;</span>
+            <div class="invoice-header-title" id="account-modal-title" style="font-size: 17px;">KELOLA AKUN KASIR</div>
+            <div class="invoice-divider"></div>
+            <form id="form-account">
+                <input type="hidden" id="account-id-edit">
+                <div class="form-group"><label>In-game Name (IGN)</label><input type="text" id="acc-ign" placeholder="Contoh: FaustLuna • Main" required></div>
+                <div class="form-group"><label>Username / Email Akun</label><input type="text" id="acc-username" required></div>
+                <div class="form-group"><label>Password Akun</label><input type="text" id="acc-password" required></div>
+                <div class="form-group"><label>Cara Login</label><input type="text" id="acc-login-method" placeholder="Contoh: Moonton / Google / Tiktok / FB" required></div>
+                <div class="form-group" style="margin-bottom:2px;"><label style="color:var(--text-gold); font-size:11px;">📦 STOK BIASA</label></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Stok Basic</label><input type="number" id="acc-basic" value="0" min="0" required></div>
+                    <div class="form-group"><label>Stok Premium</label><input type="number" id="acc-premium" value="0" min="0" required></div>
+                </div>
+                <div class="form-group" style="margin-bottom:2px;"><label style="color:var(--text-gold); font-size:11px;">🎰 STOK GACHA</label></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Stok Basic (Gacha)</label><input type="number" id="acc-basic-gacha" value="0" min="0" required></div>
+                    <div class="form-group"><label>Stok Premium (Gacha)</label><input type="number" id="acc-premium-gacha" value="0" min="0" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Limit Gift</label><input type="number" id="acc-gift" value="3" min="0" max="3" required></div>
+                    <div class="form-group"><label>Sisa Diamond</label><input type="number" id="acc-dm" value="0" min="0" required></div>
+                </div>
+                <button type="submit" class="btn-premium-action" style="margin-top: 10px;">SIMPAN DATA STOK</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="wdp-modal" class="modal">
+        <div class="modal-content invoice-card-box" style="border-style: solid;">
+            <span class="close-modal" id="close-wdp-modal">&times;</span>
+            <div class="invoice-header-title" style="font-size: 17px;">💰 CATAT BELI WDP</div>
+            <div class="invoice-divider"></div>
+            <p id="wdp-account-label" style="font-size:11px; color:var(--text-muted); margin-bottom:10px;"></p>
+            <form id="form-wdp-purchase">
+                <input type="hidden" id="wdp-account-id">
+                <div class="form-row">
+                    <div class="form-group"><label>Jumlah WDP Dibeli</label><input type="number" id="wdp-count" min="1" value="1" required oninput="updateWdpDmPreview()"></div>
+                    <div class="form-group"><label>Total DM (otomatis)</label><input type="text" id="wdp-dm-preview" value="220 DM" disabled style="opacity:0.7;"></div>
+                </div>
+                <div class="form-group"><label>Total Harga Beli (Rp)</label><input type="number" id="wdp-price" min="1" placeholder="Contoh: 75000" required></div>
+                <div class="form-group"><label>Tanggal Beli</label><input type="date" id="wdp-date" required></div>
+                <p style="font-size:10px; color:var(--text-muted);">💎 Tiap 1 WDP = <b>220 DM</b> (80 DM langsung masuk otomatis pas beli + 20 DM/hari selama 7 hari lewat klaim manual di menu 🎁 Klaim WDP, hari pertama langsung bisa diklaim). Rata-rata modal akun ikut nambah bertahap sesuai porsi DM yang masuk. Nominal harga beli ini tetap langsung tercatat sebagai Pengeluaran di Catatan Keuangan Gabungan.</p>
+                <button type="submit" class="btn-premium-action" style="margin-top: 10px;">💾 SIMPAN PEMBELIAN</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="gacha-modal" class="modal">
+        <div class="modal-content invoice-card-box" style="border-style: solid;">
+            <span class="close-modal" id="close-gacha-modal">&times;</span>
+            <div class="invoice-header-title" style="font-size: 17px;">🎰 CATAT HASIL GACHA</div>
+            <div class="invoice-divider"></div>
+            <p id="gacha-account-label" style="font-size:11px; color:var(--text-muted); margin-bottom:10px;"></p>
+            <form id="form-gacha-catat">
+                <input type="hidden" id="gacha-account-id">
+                <div class="form-group"><label>Tipe Starlight</label>
+                    <select id="gacha-type">
+                        <option value="Basic">Basic</option>
+                        <option value="Premium">Premium</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Jumlah Item Didapat</label><input type="number" id="gacha-qty" min="1" value="1" required></div>
+                    <div class="form-group"><label>Total DM yang Abis</label><input type="number" id="gacha-dm-used" min="1" placeholder="Contoh: 140" required></div>
+                </div>
+                <div class="form-group"><label>Tanggal</label><input type="date" id="gacha-date" required></div>
+                <p style="font-size:10px; color:var(--text-muted);">DM di atas langsung dipotong dari sisa DM akun ini (bukan konversi fixed 300/750), dan modal rata-rata per item stok Gacha akan dihitung ulang otomatis.</p>
+                <button type="submit" class="btn-premium-action" style="margin-top: 10px;">💾 SIMPAN HASIL GACHA</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="wdp-history-modal" class="modal">
+        <div class="modal-content invoice-card-box" style="border-style: solid;">
+            <span class="close-modal" id="close-wdp-history-modal">&times;</span>
+            <div class="invoice-header-title" id="wdp-history-title" style="font-size: 15px;">🧾 RIWAYAT BELI WDP</div>
+            <div class="invoice-divider"></div>
+            <div id="wdp-history-list" class="schedule-list" style="max-height: 350px; overflow-y: auto;"></div>
+        </div>
+    </div>
+
+    <div id="edit-tx-modal" class="modal">
+        <div class="modal-content invoice-card-box" style="border-style: solid;">
+            <span class="close-modal" id="close-edit-tx-modal">&times;</span>
+            <div class="invoice-header-title" style="font-size: 17px;">✏️ EDIT TRANSAKSI</div>
+            <div class="invoice-divider"></div>
+            <form id="form-edit-tx">
+                <input type="hidden" id="edit-tx-id">
+                <div class="form-group"><label>Nama Pembeli</label><input type="text" id="edit-tx-buyer-name" required></div>
+                <div class="form-group"><label>Target ID Game</label><input type="text" id="edit-tx-buyer-id"></div>
+                <div class="form-group"><label>Variasi Produk</label><select id="edit-tx-type"></select></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Harga Modal (Rp)</label><input type="number" id="edit-tx-price-capital" required></div>
+                    <div class="form-group"><label>Harga Jual (Rp)</label><input type="number" id="edit-tx-price-selling" required></div>
+                </div>
+                <div class="form-group"><label>Diskon (Rp)</label><input type="number" id="edit-tx-price-discount" value="0"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Tanggal Beli</label><input type="date" id="edit-tx-purchase-date" required></div>
+                    <div class="form-group"><label>Estimasi Kirim</label><input type="date" id="edit-tx-est-delivery"></div>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="edit-tx-status">
+                        <option value="Belum Dikirim">Belum Dikirim</option>
+                        <option value="Booking">Booking / Keep Slot</option>
+                        <option value="Sudah Dikirim">Sudah Dikirim</option>
+                    </select>
+                </div>
+                <p style="font-size:10px; color:var(--text-muted);">Catatan: mengubah variasi produk di sini tidak mengubah stok akun (khusus untuk koreksi data, bukan transaksi baru).</p>
+                <button type="submit" class="btn-premium-action" style="margin-top: 10px;">💾 SIMPAN PERUBAHAN</button>
+            </form>
+        </div>
+    </div>
+
+    <canvas id="testimonial-canvas" width="720" height="1280" style="display: none;"></canvas>
+
+    <div id="maskot-widget" class="maskot-widget live-hide">
+        <div class="maskot-widget-stack">
+            <div id="maskot-bubble" class="maskot-bubble"></div>
+            <img id="maskot-avatar" src="assets/maskot/luna-hai.jpg" alt="Luna" class="maskot-widget-avatar">
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/01-config.js"></script>
+    <script src="js/02-ui-core.js"></script>
+    <script src="js/03-settings.js"></script>
+    <script src="js/04-dashboard-transaksi.js"></script>
+    <script src="js/05-wdp-pembeli.js"></script>
+    <script src="js/06-notif-search-reminder.js"></script>
+    <script src="js/07-keuangan-laporan.js"></script>
+    <script src="js/08-native-notif.js"></script>
+    <script src="js/09-native-enhancements.js"></script>
+    <script src="js/10-auth-sync.js"></script>
+</body>
+</html>
